@@ -36,6 +36,12 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const JWT_SECRET = process.env.JWT_SECRET || 'crm_secret_key';
 
+// Health Check / Root route
+app.get('/', (req, res) => {
+    res.json({ message: 'CRM Backend is running normally.' });
+});
+
+
 // Admin Login
 app.post('/api/admin/login', async (req, res) => {
     const { email, password } = req.body;
