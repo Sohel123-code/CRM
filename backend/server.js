@@ -9,7 +9,19 @@ const bcrypt = require('bcryptjs');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests from Vercel deployments, localhost, and no-origin (curl/Postman)
+    const allowed = !origin
+      || origin.includes('localhost')
+      || origin.includes('vercel.app')
+      || origin.includes('onrender.com');
+    if (allowed) callback(null, true);
+    else callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
+
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
